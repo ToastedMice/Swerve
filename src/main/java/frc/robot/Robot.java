@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 
@@ -31,7 +32,16 @@ public class Robot extends TimedRobot {
   private final int strafeAxis = XboxController.Axis.kLeftX.value;
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
-  private final int zeroGyroButton = XboxController.Button.kY.value;
+  //private final int zeroGyroButton = XboxController.Button.kY.value;
+
+  final Swerve m_swerve = new Swerve();
+
+  TeleopSwerve m_teleopSwerve = new TeleopSwerve(
+    m_swerve, 
+    () -> translationAxis,
+    () -> rotationAxis,
+    () -> strafeAxis
+    );
 
 
   /**
@@ -43,16 +53,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-
-    final Swerve m_swerve = new Swerve();
-    m_swerve.setDefaultCommand(new TeleopSwerve(
-      m_swerve, 
-      () -> translationAxis,
-      () -> rotationAxis,
-      () -> strafeAxis)
-    );
-
   }
 
   /**
@@ -105,7 +105,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    m_teleopSwerve.execute();
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

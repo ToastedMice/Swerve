@@ -4,12 +4,11 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.SwerveConstants;
 import frc.robot.subsystems.Swerve;
 
-public class TeleopSwerve extends CommandBase{
+public class TeleopSwerve{
     private Swerve m_Swerve;
     private DoubleSupplier translationSupplier;
     private DoubleSupplier rotationSupplier;
@@ -20,10 +19,8 @@ public class TeleopSwerve extends CommandBase{
         this.translationSupplier = translationSupplier;
         this.rotationSupplier = rotationSupplier;
         this.strafeSupplier = strafeSupplier;
-        addRequirements(m_Swerve);
     }
 
-    @Override
     public void execute() {
         double translationValue = MathUtil.applyDeadband(translationSupplier.getAsDouble(), Constants.stickDeadband);
         double rotationValue = MathUtil.applyDeadband(rotationSupplier.getAsDouble(), Constants.stickDeadband);
