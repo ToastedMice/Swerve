@@ -23,6 +23,9 @@ import frc.robot.subsystems.Swerve;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  private final Joystick driver = new Joystick(0);
+
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
@@ -38,9 +41,9 @@ public class Robot extends TimedRobot {
 
   TeleopSwerve m_teleopSwerve = new TeleopSwerve(
     m_swerve, 
-    () -> translationAxis,
-    () -> rotationAxis,
-    () -> strafeAxis
+    () -> driver.getRawAxis(translationAxis),
+    () -> driver.getRawAxis(rotationAxis),
+    () -> driver.getRawAxis(strafeAxis)
     );
 
 
@@ -50,9 +53,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    //m_chooser.addOption("My Auto", kCustomAuto);
+    //SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**

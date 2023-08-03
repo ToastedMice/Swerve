@@ -8,7 +8,6 @@ import frc.lib.SwerveModuleConstants;
 import frc.robot.SwerveConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
@@ -25,6 +24,8 @@ public class SwerveModule {
     CANCoder steerEncoder;
 
     SimpleMotorFeedforward simpleMotorFeedforward;
+
+    SwerveModuleState testState;
     
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
@@ -43,6 +44,8 @@ public class SwerveModule {
         SwerveModuleState desiredStateOp = SwerveModuleState.optimize(desiredState, getState().angle);
         setSpeed(desiredStateOp);
         setAngle(desiredStateOp);
+        
+        testState = desiredState;
     }
 
     private void setSpeed(SwerveModuleState desiredState) {
@@ -69,8 +72,12 @@ public class SwerveModule {
         ); 
     }    
 
-    private Rotation2d getAngle() {
+    public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(steerEncoder.getAbsolutePosition());
+    }
+
+    public SwerveModuleState getTestState() {
+        return testState;
     }
 
     public SwerveModulePosition getPosition() {

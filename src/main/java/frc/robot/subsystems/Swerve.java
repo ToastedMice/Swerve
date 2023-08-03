@@ -25,6 +25,8 @@ public class Swerve extends SubsystemBase {
 
     public Pigeon2 gyro;
 
+    private SwerveModuleState testState;
+
     public Swerve() {
         gyro = new Pigeon2(Constants.pigeonID);
         gyro.configFactoryDefault();
@@ -39,6 +41,8 @@ public class Swerve extends SubsystemBase {
         
         field = new Field2d();
         SmartDashboard.putData("Field", field);
+        
+        
 
         odometry = new SwerveDriveOdometry(SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
     }
@@ -61,13 +65,20 @@ public class Swerve extends SubsystemBase {
 
         for (SwerveModule module : swerveModules) {
             module.setDesiredState(swerveModuleStates[module.moduleNumber]);
+            
         }
+
+        testState = swerveModules[0].getTestState();
+        SmartDashboard.putNumber("Module1 Angle", testState.angle.getDegrees());
+        SmartDashboard.putNumber("Module1 Speed", testState.speedMetersPerSecond);
+        //SmartDashboard.putNumber("Module1 Angle", translation.getX());
     }
 
     public SwerveModulePosition[] getModulePositions(){
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for(SwerveModule mod : swerveModules){
             positions[mod.moduleNumber] = mod.getPosition();
+            
         }
         return positions;
     }

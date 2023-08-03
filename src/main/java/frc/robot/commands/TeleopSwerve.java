@@ -22,14 +22,13 @@ public class TeleopSwerve{
     }
 
     public void execute() {
-        double translationValue = MathUtil.applyDeadband(translationSupplier.getAsDouble(), Constants.stickDeadband);
-        double rotationValue = MathUtil.applyDeadband(rotationSupplier.getAsDouble(), Constants.stickDeadband);
-        double strafeValue = MathUtil.applyDeadband(strafeSupplier.getAsDouble(), Constants.stickDeadband);
+        double translationValue = MathUtil.applyDeadband(translationSupplier.getAsDouble(), Constants.stickDeadzone);
+        double rotationValue = MathUtil.applyDeadband(rotationSupplier.getAsDouble(), Constants.stickDeadzone);
+        double strafeValue = MathUtil.applyDeadband(strafeSupplier.getAsDouble(), Constants.stickDeadzone);
     
     
         m_Swerve.drive(
-            new Translation2d(
-                translationValue, strafeValue).times(SwerveConstants.maxSpeed), 
+            new Translation2d(translationValue, strafeValue).times(SwerveConstants.maxSpeed), 
                 rotationValue * SwerveConstants.maxAngularVelocity, 
                 true
             );
