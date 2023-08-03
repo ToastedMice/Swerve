@@ -16,7 +16,9 @@ import frc.lib.math.Conversions;
 
 public class SwerveModule {
     public int moduleNumber; 
+
     Rotation2d offset;
+    Rotation2d lastAngle;
 
     TalonFX driveMotor;
     TalonFX steerMotor;
@@ -34,12 +36,13 @@ public class SwerveModule {
 
         simpleMotorFeedforward = new SimpleMotorFeedforward(SwerveConstants.driveKS, SwerveConstants.driveKV, SwerveConstants.driveKA);
 
-        steerEncoder = new CANCoder(moduleConstants.steerEncoderID);
-        
+        lastAngle = getState().angle;        
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-
+        SwerveModuleState desiredStateOp = SwerveModuleState.optimize(desiredState, getState().angle);
+        setSpeed(desiredStateOp);
+        setAngle(desiredStateOp);
     }
 
     private void setSpeed(SwerveModuleState desiredState) {
@@ -47,11 +50,34 @@ public class SwerveModule {
         driveMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
+    private void setAngle(SwerveModuleState desiredState) {
+        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= SwerveConstants.maxSpeed * 0.01) ? lastAngle : desiredState.angle;
+
+        steerMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), SwerveConstants.driveGearRatio));
+        lastAngle = angle;
+    }
+
     public void resetToAbsolute() {
         double absolutePosition = Conversions.degreesToFalcon(steerEncoder.getAbsolutePosition(), SwerveConstants.steerGearRatio);
         driveMotor.setSelectedSensorPosition(absolutePosition);
     }
 
-    
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(
+            Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(), SwerveConstants.wheelCircumference, SwerveConstants.driveGearRatio), 
+            getAngle()
+        ); 
+    }    
+
+    private Rotation2d getAngle() {
+        return Rotation2d.fromDegrees(steerEncoder.getAbsolutePosition());
+    }
+
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(
+            Conversions.falconToMeters(driveMotor.getSelectedSensorPosition(), SwerveConstants.wheelCircumference, SwerveConstants.driveGearRatio), 
+            getAngle()
+        );
+    }
 
 }

@@ -16,7 +16,7 @@ public class TeleopSwerve extends CommandBase{
     private DoubleSupplier strafeSupplier;
 
     public TeleopSwerve (Swerve swerve, DoubleSupplier translationSupplier, DoubleSupplier rotationSupplier, DoubleSupplier strafeSupplier) {
-        m_Swerve = swerve;
+        this.m_Swerve = swerve;
         this.translationSupplier = translationSupplier;
         this.rotationSupplier = rotationSupplier;
         this.strafeSupplier = strafeSupplier;
