@@ -6,8 +6,8 @@ import frc.lib.SwerveModuleConstants;
 
 public final class SwerveConstants {
 
-    public static final double maxSpeed = 5;
-    public static final double maxAngularVelocity = 5;
+    public static final double maxSpeed = 1;
+    public static final double maxAngularVelocity = 1;
 
     public static final double trackWidth = 1; 
     public static final double wheelBase = 1; 
@@ -18,6 +18,10 @@ public final class SwerveConstants {
 
     public static final double steerGearRatio = 10.0;
     public static final double driveGearRatio = 10.0;
+
+    public static final double wheelCircumference = 0.5;
+
+
 
     public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
         new Translation2d(wheelBase / 2.0, trackWidth / 2.0),

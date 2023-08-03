@@ -40,7 +40,7 @@ public class Swerve extends SubsystemBase {
         field = new Field2d();
         SmartDashboard.putData("Field", field);
 
-        odometry = new SwerveDriveOdometry(SwerveConstants.swerveKinematics, null, null);
+        odometry = new SwerveDriveOdometry(SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
@@ -62,6 +62,14 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule module : swerveModules) {
             module.setDesiredState(swerveModuleStates[module.moduleNumber]);
         }
+    }
+
+    public SwerveModulePosition[] getModulePositions(){
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
+        for(SwerveModule mod : swerveModules){
+            positions[mod.moduleNumber] = mod.getPosition();
+        }
+        return positions;
     }
 
     public void zeroGyro() {
