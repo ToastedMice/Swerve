@@ -9,45 +9,40 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.autos.*;
 import frc.robot.subsystems.Swerve;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class AutoController {
     private Swerve m_swerve;
+    SendableChooser<AutoSelection> autoSelector;
+    AutoSelection selectedAuto;
 
     public AutoController(Swerve m_swerveIn) {
         m_swerve = m_swerveIn;
+        
+        autoSelector = new SendableChooser<AutoSelection>();
+
+        // Add each auto to the dashboard dropdown menu
+        for (AutoSelection auto : AutoSelection.values()) {
+            autoSelector.addOption(auto.name(), auto);
+        }
+
+        SmartDashboard.putData("Auto Selector", autoSelector);
     }
-    
-    public enum AutoSelection {
-        EXAMPLE_AUTO
+
+    public AutoMode[] autos = {
+        new ExampleAuto(m_swerve)
     };
 
-    // public AutoMode[] autos = {
-    //     new ExampleAutoCopy(m_swerve)
-    // };
+    public enum AutoSelection {
+        EXAMPLE_AUTO,
+        EXAMPLE_AUTO_2
+    };
 
-    public Command autoCommand = new ExampleAutoCopy(m_swerve);
-    //autoCommand.schedule();
+    public void initialiseAuto() {
+        selectedAuto = autoSelector.getSelected();
+        SmartDashboard.putString("Sel auto", "" + selectedAuto);
+    }
 
-    SendableChooser<AutoSelection> autoSelector = new SendableChooser<>();
-    AutoSelection selectedAuto;
-
-    static AutoMode runningAuto;
-
-    private AutoController() {
-		autoSelector = new SendableChooser<AutoSelection>();
-		
-		// Add each auto to the dashboard dropdown menu
-		for (AutoSelection auto : AutoSelection.values()) {			
-			autoSelector.addOption(auto.name(), auto);
-		}
-
-		SmartDashboard.putData("Auto Selector", autoSelector);
-	}
-
-    // public boolean exit() {
-	// 	return runningAuto.getExit();
-	// }
-
-    
+    public void runAuto() {
+        SmartDashboard.putString("Sel auto", "" + selectedAuto);
+    }
 }

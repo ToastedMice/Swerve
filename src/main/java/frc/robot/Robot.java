@@ -30,7 +30,6 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private final int translationAxis = XboxController.Axis.kLeftY.value;
   private final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -41,7 +40,7 @@ public class Robot extends TimedRobot {
 
   final Swerve m_swerve = new Swerve();
 
-  AutoController autoController;
+  public AutoController autoController;
   public ExampleAuto m_autonomousCommand;
 
   TeleopSwerve m_teleopSwerve = new TeleopSwerve(
@@ -74,7 +73,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -95,6 +93,7 @@ public class Robot extends TimedRobot {
     System.out.println("Auto selected: " + m_autoSelected);
 
     //autoController = new AutoController(m_swerve); 
+    //autoController.initialiseAuto();
 
     m_autonomousCommand = new ExampleAuto(m_swerve);   
     
@@ -115,6 +114,8 @@ public class Robot extends TimedRobot {
     if(m_autonomousCommand.isFinished == false) {
       m_autonomousCommand.run();
     }
+
+    //autoController.runAuto();
     
   }
 

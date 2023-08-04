@@ -20,7 +20,7 @@ import frc.robot.constants.AutoConstants;
 import frc.robot.constants.SwerveConstants;
 import frc.robot.subsystems.Swerve;
 
-public class ExampleAuto {
+public class ExampleAuto implements AutoMode {
     private final Swerve m_swerve;
     private final HolonomicDriveController controller;
     private final Trajectory trajectory;
@@ -81,5 +81,9 @@ public class ExampleAuto {
 
         SmartDashboard.putNumber("Module1 Speed Auto", moduleStates[0].speedMetersPerSecond);
         SmartDashboard.putNumber("Module1 Angle Auto", moduleStates[0].angle.getDegrees());
+    }
+
+    public String getNameString() {
+        return "Example Auto";
     }
 }
