@@ -36,14 +36,16 @@ public class Robot extends TimedRobot {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   //private final int zeroGyroButton = XboxController.Button.kY.value;
+  private final int fieldRelativeButton = XboxController.Button.kRightBumper.value;
 
   final Swerve m_swerve = new Swerve();
 
   TeleopSwerve m_teleopSwerve = new TeleopSwerve(
     m_swerve, 
-    () -> driver.getRawAxis(translationAxis),
-    () -> driver.getRawAxis(rotationAxis),
-    () -> driver.getRawAxis(strafeAxis)
+      () -> driver.getRawAxis(translationAxis),
+      () -> driver.getRawAxis(rotationAxis),
+      () -> driver.getRawAxis(strafeAxis),
+      () -> driver.getRawButton(fieldRelativeButton)
     );
 
 

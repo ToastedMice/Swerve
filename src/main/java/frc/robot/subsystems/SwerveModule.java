@@ -5,13 +5,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.SwerveModuleConstants;
-import frc.robot.SwerveConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import frc.lib.math.Conversions;
+import frc.robot.constants.SwerveConstants;
 
 public class SwerveModule {
     public int moduleNumber; 
