@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class AutoController {
     private Swerve m_swerve;
 
-    public AutoController(Swerve m_swerve) {
-        this.m_swerve = m_swerve;
+    public AutoController(Swerve m_swerveIn) {
+        m_swerve = m_swerveIn;
     }
     
     public enum AutoSelection {

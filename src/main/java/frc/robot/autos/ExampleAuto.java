@@ -28,15 +28,15 @@ public class ExampleAuto {
     public boolean isFinished = false;
     private double startTime;
 
-    public ExampleAuto(Swerve m_swerve) {
-        this.m_swerve = m_swerve;
+    public ExampleAuto(Swerve m_swerveIn) {
+        m_swerve = m_swerveIn;
 
         TrajectoryConfig config = new TrajectoryConfig(
             AutoConstants.kMaxSpeedMetersPerSecond,
             AutoConstants.kMaxAccelerationMetersPerSecondSquared
         ).setKinematics(SwerveConstants.swerveKinematics);
 
-        this.trajectory = TrajectoryGenerator.generateTrajectory(
+        trajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new Rotation2d(0)),
             List.of(
                 new Translation2d(1, 1),
@@ -54,20 +54,20 @@ public class ExampleAuto {
         );
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        this.controller = new HolonomicDriveController(
+        controller = new HolonomicDriveController(
             new PIDController(1, 0, 0),
             new PIDController(1, 0, 0),
             thetaController
         );
-        this.m_swerve.resetOdometry(this.trajectory.getInitialPose());
-        this.startTime = Timer.getFPGATimestamp();
+        m_swerve.resetOdometry(this.trajectory.getInitialPose());
+        startTime = Timer.getFPGATimestamp();
     }
 
     public void run() {
-        this.goal = this.trajectory.sample(Timer.getFPGATimestamp()-startTime);
+        goal = this.trajectory.sample(Timer.getFPGATimestamp()-startTime);
         ChassisSpeeds chassisSpeeds = this.controller.calculate(
-            this.m_swerve.getPose(),
-            this.goal,
+            m_swerve.getPose(),
+            goal,
             Rotation2d.fromDegrees(70.0)
         );
 
@@ -77,7 +77,7 @@ public class ExampleAuto {
 
         SwerveModuleState[] moduleStates = SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
 
-        this.m_swerve.setSwerveModuleStates(moduleStates);
+        m_swerve.setSwerveModuleStates(moduleStates);
 
         SmartDashboard.putNumber("Module1 Speed Auto", moduleStates[0].speedMetersPerSecond);
         SmartDashboard.putNumber("Module1 Angle Auto", moduleStates[0].angle.getDegrees());
