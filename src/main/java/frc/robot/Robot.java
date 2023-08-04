@@ -4,13 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.autos.ExampleAuto;
+import frc.robot.autos.ExampleAutoCopy;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 
@@ -39,6 +40,9 @@ public class Robot extends TimedRobot {
   private final int fieldRelativeButton = XboxController.Button.kRightBumper.value;
 
   final Swerve m_swerve = new Swerve();
+
+  AutoController autoController;
+  public ExampleAuto m_autonomousCommand;
 
   TeleopSwerve m_teleopSwerve = new TeleopSwerve(
     m_swerve, 
@@ -70,7 +74,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -85,9 +89,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    //m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    m_autoSelected = "Default";
     System.out.println("Auto selected: " + m_autoSelected);
+
+    //autoController = new AutoController(m_swerve); 
+
+    m_autonomousCommand = new ExampleAuto(m_swerve);   
+    
   }
 
   /** This function is called periodically during autonomous. */
@@ -102,6 +112,10 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
+    if(m_autonomousCommand.isFinished == false) {
+      m_autonomousCommand.run();
+    }
+    
   }
 
   /** This function is called once when teleop is enabled. */

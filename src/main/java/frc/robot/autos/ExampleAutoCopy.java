@@ -1,5 +1,6 @@
 package frc.robot.autos;
 
+import frc.robot.AutoController.AutoSelection;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.SwerveConstants;
 import frc.robot.subsystems.Swerve;
@@ -14,11 +15,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 public class ExampleAutoCopy extends SequentialCommandGroup {
+
     public ExampleAutoCopy(Swerve s_Swerve){
         TrajectoryConfig config =
             new TrajectoryConfig(
@@ -58,5 +61,6 @@ public class ExampleAutoCopy extends SequentialCommandGroup {
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
             swerveControllerCommand
         );
+
     }
 }
